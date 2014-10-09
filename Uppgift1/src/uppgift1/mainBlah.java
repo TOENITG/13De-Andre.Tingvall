@@ -23,7 +23,7 @@ public class mainBlah {
 												" kommer vi komma till dig,\n" +
 												aNamn + " och fira dig.\n" + 
 												"Detta är ett automatiskt meddelande."),
-												"Message to puny human", 1);
+												"Message to puny " + fNamn, 1);
 		
 	}
 	
