@@ -25,6 +25,7 @@ public class mainBlah {
 												"Detta är ett automatiskt meddelande."),
 												"Message to puny " + fNamn, 1);
 		
+		System.exit(0);
 	}
 	
 }
