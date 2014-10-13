@@ -20,7 +20,7 @@ public class MainPrimeFinder {
 			System.out.println(lFil(path));
 		}catch(FileNotFoundException e){
 			e.printStackTrace();
-			System.out.println("\n\n Creating new file since the old one wasn't found.\n\n");
+			System.out.println("\n\n Creating new file since the old file wasn't found.\n\n");
 			File f = new File(path);
 			f.createNewFile();
 			sFil(path, "2\n3\n5\n");
