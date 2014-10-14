@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public class MainPrimeFinder {
 
@@ -23,35 +24,36 @@ public class MainPrimeFinder {
 			System.out.println("\n\n Creating new file since the old file wasn't found.\n\n");
 			File f = new File(path);
 			f.createNewFile();
-			sFil(path, "2\n3\n5\n");
+			sFil(path, "2\n3\n");
 		}
 		
-		getPrimes();
+		getPrimes(lFil(path));
 		
 		System.out.println(lFil(path).get(lFil(path).size() - 1));
 		System.out.println("Done");
 		System.exit(0);
 	}
 		
-	private static void getPrimes() throws IOException {
+	private static void getPrimes(ArrayList<Integer> pList) throws IOException {
 		int cInt = 3;
 		try{
-			cInt = lFil(path).get(lFil(path).size() - 1);
+			cInt = pList.get(pList.size() - 1);
 		}catch(NumberFormatException e){
 			
 		}
 		boolean isPrime = true;
 		
-		for(int li = 0; li < 1000; li ++){
-			for(int i = 0; i < lFil(path).size() && isPrime; i++){
-				if((int)((double)cInt/(double)lFil(path).get(i)) == ((double)cInt/(double)lFil(path).get(i))){
+		for(int li = 0; li < 100000; li ++){
+			for(int i = 0; i < pList.size() && isPrime; i++){
+				if((int)((double)cInt/(double)pList.get(i)) == ((double)cInt/(double)pList.get(i))){
 					isPrime = false;
 				}
 			}
 			
 			if (isPrime){
-				sFil(path, lFil(path).toString().replace(", ", "\n").replace("[", "").replace("]", "") + "\n" + String.valueOf(cInt));
-				System.out.println(lFil(path).get(lFil(path).size() - 1));
+				sFil(path, pList.toString().replace(", ", "\n").replace("[", "").replace("]", "") + "\n" + String.valueOf(cInt));
+				pList.add(cInt);
+				System.out.println(pList.get(pList.size() - 1));
 			}
 
 			
