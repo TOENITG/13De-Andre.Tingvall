@@ -34,7 +34,7 @@ public class MainPrimeFinder {
 		System.exit(0);
 	}
 		
-	private static void getPrimes(ArrayList<Integer> pList) throws IOException {
+	public static void getPrimes(ArrayList<Integer> pList) throws IOException {
 		int cInt = 3;
 		try{
 			cInt = pList.get(pList.size() - 1);
@@ -43,7 +43,7 @@ public class MainPrimeFinder {
 		}
 		boolean isPrime = true;
 		
-		for(int li = 0; li < 100000; li ++){
+		for(int li = 0; li < 1000; li ++){
 			for(int i = 0; i < pList.size() && isPrime; i++){
 				if((int)((double)cInt/(double)pList.get(i)) == ((double)cInt/(double)pList.get(i))){
 					isPrime = false;
