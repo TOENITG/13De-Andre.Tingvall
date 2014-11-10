@@ -4,15 +4,15 @@ import java.util.Random;
 
 public class MainBubblesort {
 
-	static int numberOfActions = 0;
-	static int numberOfLoops = 0;
-	static int numberOfSubLoops = 0;
+	//extra information
+	static int numberOfActions = 0; //antalet flyttningar
+	static int numberOfLoops = 0; //antalet loopar 
 	
-	public static int[] bubbleSort(int arToSort[]){
+	public static int[] bubbleSort(int arToSort[]){ //sorterar
 		boolean didStuff; 
 		do{
 			didStuff = false;
-			for(int i = 0; i < arToSort.length-1; i ++){
+			for(int i = 0; i < arToSort.length-1; i ++){ //går igenom och jämför talen i arrayen
 				if(arToSort[i] < arToSort[i+1]){
 					int a = arToSort[i+1];
 					arToSort[i+1] = arToSort[i];
@@ -20,22 +20,21 @@ public class MainBubblesort {
 					didStuff = true;
 					numberOfActions++;
 				}
-				numberOfSubLoops++;
 			}
 			numberOfLoops++;
-		}while(didStuff);
+		}while(didStuff); //loopen avslutas när programmet inte har gjort någon ändring i arrayen
 		
 		return arToSort;
 	}
 	
-	public static void printAll(int arToPrint[]){
+	public static void printAll(int arToPrint[]){ //Skriver ut arrayen
 		for(int i = 0; i < arToPrint.length; i++){
 			if(i % 10 == 0) System.out.println();
 			System.out.print("\t"+ arToPrint[i]);
 		}
 	}
 	
-	public static void randomAll(int arToRand[]){
+	public static void randomAll(int arToRand[]){ //slumpar fram tal och sätter in dem i arrayen
 		
 		Random rand = new Random();
 		
@@ -49,15 +48,13 @@ public class MainBubblesort {
 		int[] listOfInts = new int[100];
 		
 		randomAll(listOfInts);
-		
 		printAll(listOfInts);
-		
 		System.out.println("\n\n");
 		
 		bubbleSort(listOfInts);
-		
 		printAll(listOfInts);
-		System.out.println("\n\tActions: " + numberOfActions + "\n\tLoops: " + numberOfLoops+ "\n\tSubloops: " + numberOfSubLoops);
+		System.out.println("\n\tActions: " + numberOfActions
+				+ "\n\tLoops: " + numberOfLoops);
 	}
 
 }
