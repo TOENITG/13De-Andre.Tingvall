@@ -43,8 +43,8 @@ public class MainPrimeFinder {
 		}
 		boolean isPrime = true;
 		
-		for(int li = 0; li < 1000; li ++){
-			for(int i = 0; i < pList.size() && isPrime; i++){
+		for(int li = 0; li < 100; li ++){
+			for(int i = 0; i < pList.size()/2+1 && isPrime; i++){
 				if((int)((double)cInt/(double)pList.get(i)) == ((double)cInt/(double)pList.get(i))){
 					isPrime = false;
 				}
