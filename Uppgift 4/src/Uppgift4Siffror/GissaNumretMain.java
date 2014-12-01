@@ -9,16 +9,23 @@ public class GissaNumretMain {
 		String quest;
 		int guess;
 		int svar;
+		System.out.println("a");
 		do{
+
+			System.out.println("b");
 			svar = (int)(Math.random()*100);
 			guess = -1;
-			quest = "Gissa talet som datorn tänker på mellan 1 till 100";
+			quest = "Gissa talet som datorn tï¿½nker pï¿½ mellan 1 till 100";
 			do{
+
+				System.out.println("c");
 				try{
 					guess = Integer.valueOf(JOptionPane.showInputDialog(quest));
 				}catch(java.lang.NumberFormatException e){
-					JOptionPane.showMessageDialog(null,"Var snäll och skriv in ett tal");
+					JOptionPane.showMessageDialog(null,"Var snï¿½ll och skriv in ett tal");
 				}
+
+				System.out.println("d");
 				if(guess-50>svar||guess+50<svar){
 					quest="ISKALLT";
 				}else if(guess-25>svar||guess+25<svar){
@@ -28,14 +35,15 @@ public class GissaNumretMain {
 				}else if(guess-5>svar||guess+5<svar){
 					quest="Varmt";
 				}else{
-					quest="JÄTTEVARMT";
+					quest="Jï¿½TTEVARMT";
 				}
-				
+
+				System.out.println("e");
 				quest += ", gissa med ett ";
-				if(guess<svar)quest+="högre tal!";
-				if(guess>svar)quest+="lägre tal!";
+				if(guess<svar)quest+="hï¿½gre tal!";
+				if(guess>svar)quest+="lï¿½gre tal!";
 			}while(guess!=svar);
-		}while(JOptionPane.showConfirmDialog(null, "Du gissade rätt!\n\nVill du köra programmet igen?")==0);
+		}while(JOptionPane.showConfirmDialog(null, "Du gissade rï¿½tt!\n\nVill du kï¿½ra programmet igen?")==0);
 		
 	}
 
