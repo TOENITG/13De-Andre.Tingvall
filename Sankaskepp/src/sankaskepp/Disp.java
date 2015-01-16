@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Shell;
 
 public class Disp {
 	
-	static Display disp = new Display();
+	static Display disp = Display.getCurrent();
 	static Shell shell = new Shell(SWT.CLOSE | SWT.TITLE | SWT.MIN);
 	static FormLayout layout = new FormLayout();
 
@@ -32,21 +32,17 @@ public class Disp {
 		ImageLocation.load("Ship.png"),
 		ImageLocation.load("ShipUnsunk.png")};
 
-
 	public static void displayStart(){ //fixar all nödvändig imformation för att rätt saker ska visas på skärmen
 		
 		//För lättare modifiering utav storleken på knapparna
-		int buttonPosition = 10;
-		int buttonSize = 35;
+		int buttonPosition = 12;
+		int buttonSize = 36;
 		int buttonSpace = 25;
 		int mapSpace = 25;
 		
-		shell.setText(String.valueOf(State.player+1));
-		
 		shell.setSize((butt.length*buttonPosition+butt.length*buttonSpace)*2+mapSpace+5,
 				butt.length*buttonPosition+butt.length*buttonSpace + 30);
-		FormData[][] formData = new FormData[State.fieldSize][State.fieldSize];
-		FormData[][] formDataDin = new FormData[State.fieldSize][State.fieldSize];
+		
 		for(int x = 0; x < butt.length; x++){
 			for(int y = 0; y < butt[x].length; y++){
 				
@@ -62,11 +58,15 @@ public class Disp {
 				butt[x][y].addListener(SWT.Selection, new Listener(){
 					public void handleEvent(Event e) {
 						if(e.type == SWT.Selection){
+							Debug.out("Disp.displayStart()\tButton was pressed\tx:"+bx+"\ty:"+by);
 							if(State.map(State.pl(State.player), bx, by)!=1){
 								//System.out.println("X:" + bx + ", Y:" + by + ", Current player:" + State.player + ", Next player:" + State.pl(State.player));
 								State.fire(bx,by);
+								Debug.out("Disp.displayStart()\tSuccessfull shot");
 								if(State.isShip(State.pl(State.player), bx, by)!=-1){
-									if(State.allIsSunk()){
+									Debug.out("Disp.displayStart()\tA ship was hit");
+									if(State.allIsSunk()&&State.pl(State.player)==State.player){
+										Debug.out("Disp.displayStart()\tAll ships are destroyed");
 										updateView();
 										winWindow();
 									}else{
@@ -84,17 +84,19 @@ public class Disp {
 					}				
 				});
 				
-				formData[x][y] = new FormData();
-				formData[x][y].top = new FormAttachment(0, y*buttonPosition+buttonSpace*y); //knappplacering
-				formData[x][y].left = new FormAttachment(0, x*buttonPosition+buttonSpace*x);
-				formData[x][y].bottom = new FormAttachment(0, y*buttonPosition+buttonSize+buttonSpace*y);
-				formData[x][y].right = new FormAttachment(0, x*buttonPosition+buttonSize+buttonSpace*x);
+				FormData formData = new FormData();
+				
+				formData = new FormData();
+				formData.top = new FormAttachment(0, y*buttonPosition+buttonSpace*y); //knappplacering
+				formData.left = new FormAttachment(0, x*buttonPosition+buttonSpace*x);
+				formData.bottom = new FormAttachment(0, y*buttonPosition+buttonSize+buttonSpace*y);
+				formData.right = new FormAttachment(0, x*buttonPosition+buttonSize+buttonSpace*x);
 			
-				butt[x][y].setLayoutData(formData[x][y]);
+				butt[x][y].setLayoutData(formData);
 				
 				//skapandet av din plan som �r till h�ger
 				
-				dinPlan[x][y] = new Label(shell,SWT.BORDER);
+				dinPlan[x][y] = new Label(shell,SWT.NONE);
 				
 				
 				try{
@@ -102,16 +104,17 @@ public class Disp {
 				} catch (FileNotFoundException e) {
 					dinPlan[x][y].setText("File not found.");
 				}
-				
-				formDataDin[x][y] = new FormData();
-				formDataDin[x][y].top = new FormAttachment(0, y*buttonPosition+buttonSpace*y); //knappplacering
-				formDataDin[x][y].left = new FormAttachment(0, x*buttonPosition+buttonSpace*x+mapSpace
+
+				FormData formDataDin = new FormData();
+				formDataDin = new FormData();
+				formDataDin.top = new FormAttachment(0, y*buttonPosition+buttonSpace*y); //knappplacering
+				formDataDin.left = new FormAttachment(0, x*buttonPosition+buttonSpace*x+mapSpace
 						+butt.length*buttonPosition+butt.length*buttonSpace);
-				formDataDin[x][y].bottom = new FormAttachment(0, y*buttonPosition+buttonSize+buttonSpace*y);
-				formDataDin[x][y].right = new FormAttachment(0, x*buttonPosition+buttonSize+buttonSpace*x+mapSpace
+				formDataDin.bottom = new FormAttachment(0, y*buttonPosition+buttonSize+buttonSpace*y);
+				formDataDin.right = new FormAttachment(0, x*buttonPosition+buttonSize+buttonSpace*x+mapSpace
 						+butt.length*buttonPosition+butt.length*buttonSpace);
 				
-				dinPlan[x][y].setLayoutData(formDataDin[x][y]);
+				dinPlan[x][y].setLayoutData(formDataDin);
 				
 			}	
 		}
@@ -124,6 +127,7 @@ public class Disp {
 				}
 			}				
 		});
+		
 		FormData formDataNext = new FormData();
 		formDataNext.top = new FormAttachment(0, 0);
 		formDataNext.left = new FormAttachment(0, 0);
@@ -135,18 +139,22 @@ public class Disp {
 		updateView();
 		shell.setLayout(layout);
 		shell.open();
+		
+		runDisplay();
 	}
 	
 	public static void updateView(){
+		Debug.out("Disp.updateView()\tUpdate view");
+		shell.setText("Spelare " + String.valueOf(State.player+1) + " ska spela. Du skjuter mot spelare " + String.valueOf(State.pl(State.player)+1));
 		for(int x = 0; x < State.fieldSize; x++){
 			for(int y = 0; y < State.fieldSize; y++){
+				Debug.all("Disp.updateView()\tChange tile appearance: "+x+" "+y);
 				
 				try{
 					butt[x][y].setImage(mapImage(State.pl(State.player),x, y,false));
 				}catch(java.io.FileNotFoundException e1){
 					butt[x][y].setText("File not found.");
 				}
-				
 				
 				try{
 					dinPlan[x][y].setImage(mapImage(State.player,x,y,true));
@@ -161,7 +169,7 @@ public class Disp {
 	}
 	
 	public static void winWindow(){//rutan som poppar upp n�r en spalare har s�nk alla motst�ndarens skepp
-		
+		Debug.out("Disp.winWindow()\tCreating win window");
 		int xSize = 175;
 		int ySize = 150;
 		Shell winShell = new Shell(disp/*, SWT.CLOSE | SWT.TITLE | SWT.MIN*/);
@@ -176,6 +184,7 @@ public class Disp {
 		okButton.addListener(SWT.Selection, new Listener(){
 			public void handleEvent(Event e) {
 				if(e.type == SWT.Selection){
+					Debug.out("Disp.winWindow()\tQuit was pressed");
 					winShell.dispose();
 					shell.dispose();
 					System.exit(0);
@@ -205,9 +214,12 @@ public class Disp {
 		winShell.layout();
 	}
 	
-	public static void hideView(){
+	public static void hideView(){ //gömmer alla knappar
+		shell.setText("Spelare " + String.valueOf(State.player+1) + " ska spela.");
+		Debug.out("Disp.hideView()\tHiding all buttons");
 		for(int x = 0; x < State.fieldSize; x++){
 			for(int y = 0; y < State.fieldSize; y++){
+				Debug.all("Disp.hideView()\tHinding button: "+x+" "+y);
 				butt[x][y].setVisible(false);
 				dinPlan[x][y].setVisible(false);
 			}
@@ -215,6 +227,7 @@ public class Disp {
 	}
 	
 	public static Image mapImage(int p, int x, int y, boolean showFriendlyShip) throws java.io.FileNotFoundException{
+		Debug.all("Disp.Image mapImage\tp:"+p+"\tx:"+x+"\ty:"+y+"\tshowFriendlyShip:"+showFriendlyShip);
 		if(State.map(p, x, y)==1){ //Om spelaren har skjutit på plats x,y
 			if(State.isShip(p, x, y)!=-1){//Om det finns ett skepp på x,y
 				if(State.isSunk(p, State.isShip(p, x, y))){//om skeppet på x,y är sänkt

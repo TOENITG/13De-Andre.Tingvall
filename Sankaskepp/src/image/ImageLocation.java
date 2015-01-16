@@ -3,7 +3,7 @@ package image;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 
-public class ImageLocation { //Denna klass används som en pekare för vart filerna ligger
+public class ImageLocation { //Denna klass anvï¿½nds som en pekare fï¿½r vart filerna ligger
 	
 	static public Image load(String img){
 		
